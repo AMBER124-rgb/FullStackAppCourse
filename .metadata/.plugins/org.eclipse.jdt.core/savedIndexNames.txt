@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\Admin\Desktop\React\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2519165821.index
+50284477.index
+3239683873.index

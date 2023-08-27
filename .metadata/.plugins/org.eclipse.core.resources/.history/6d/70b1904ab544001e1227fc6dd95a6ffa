@@ -1,0 +1,68 @@
+package com.example.demo.services;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dao.CourseDao;
+import com.example.demo.entities.Course;
+import com.example.demo.excpetion.ResourceNotFoundException;
+
+@Service
+public class CourseServiceImpl implements CourseService {
+
+	@Autowired 
+	private CourseDao courseDao;
+	
+	
+	List<Course> list =new ArrayList<>();
+	public CourseServiceImpl() {
+//		
+//		list.add(new Course(145,"Java ","Basic Java course tutorial"));
+//		list.add(new Course(134,"DotNet ","Basic DotNet course tutorial"));
+	}
+	
+	@Override
+	public List<Course> getCourses() {
+		return courseDao.findAll();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public Course getCourse(long courseId) {
+
+		return courseDao.findById(courseId).orElseThrow(() -> new ResourceNotFoundException("Invalid emp id !!!!!"));
+		
+	}
+
+	@Override
+	public Course addCourse(Course course) {
+		 //list.add(course);
+		courseDao.save(course);
+		 return course;
+	}
+
+	@Override
+	public Course updateCourse(Course c) {
+//		
+//		for(Course course : list) {
+//			if(course.getId()==c.getId()) {
+//				course.setTitle(c.getTitle());
+//				course.setDescription(c.getDescription());
+//			}
+//		}
+		courseDao.save(c);
+		return c;
+	}
+
+	@Override
+	public void deleteCourse(long parseLong) {
+		//this.list.stream().filter(e->e.getId()!=parseLong).collect(Collectors.toList());
+		Course entity = courseDao.getOne(parseLong);
+		courseDao.delete(entity);
+	}
+
+	
+}

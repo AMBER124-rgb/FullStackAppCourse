@@ -1,0 +1,71 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.dto.ApiResponse;
+import com.example.demo.entities.Course;
+import com.example.demo.services.CourseService;
+
+@RestController
+@RequestMapping("/courses")
+@CrossOrigin(origins = "http://localhost:3000")
+public class MyController {
+
+	@Autowired
+	private CourseService courseService;
+	
+//	@GetMapping("/home")
+//	public String home() {
+//		return "this is home page!!!";
+//	}
+//	
+	//get list of courses
+	@GetMapping("/")
+	public List<Course> getCourses(){
+		return this.courseService.getCourses();
+	}
+	
+	//get single course
+	@GetMapping("/{courseId}")
+	public Course getCourse(@PathVariable String courseId) {
+		return this.courseService.getCourse(Long.parseLong(courseId));
+	}
+	
+	//add a new course
+	@PostMapping("/")
+	public Course addCourse(@RequestBody Course course) {
+		return this.courseService.addCourse(course);
+	}
+	
+	//Update current course
+	@PutMapping("/")
+	public Course updateCourse(@RequestBody Course course) {
+		return this.courseService.updateCourse(course);
+	}
+	
+	//delete  a course 
+	@DeleteMapping("/{courseId}")
+	public ApiResponse deleteCourse(@PathVariable Long courseId){
+		try {
+		//this.courseService.deleteCourse(Long.parseLong(courseId));
+		return new ApiResponse(courseService.deleteCourse(courseId));
+		}
+		catch(RuntimeException e) {
+			System.out.println("err occurred " + e);
+			return new ApiResponse("Server error " + e.getMessage());
+	}
+}
+}
